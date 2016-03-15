@@ -10,8 +10,9 @@ set (CMAKE_INCLUDE_CURRENT_DIR ON)
 set (CMAKE_AUTOMOC ON)
 
 find_package (Qt5Widgets REQUIRED)
+find_package (Qt5Network REQUIRED)
 
-file (GLOB SOURCES . src/*.cpp)
+file (GLOB_RECURSE SOURCES . src/*.cpp)
 source_group ("Source Files" FILES ${SOURCES})
 file (GLOB HEADERS . src/*.h)
 source_group ("Header Files" FILES ${HEADERS})
@@ -27,6 +28,8 @@ if (${IqOrm_FOUND})
     include_directories (${IqOrm_INCLUDE_DIRS})
 endif ()
 
+include_directories (${CMAKE_BINARY_DIR})
+
 set (ICON_RES_FILE "")
 if(MINGW)
     file (GLOB ICON_RES_FILE . src/icon.rc)
@@ -39,7 +42,7 @@ add_definitions (-DIQORM_LIBRARY)
 add_definitions (-DLIB_VERSION=${VERSION})
 add_executable (${TARGET} WIN32 ${SOURCES} ${FORMS_HEADERS} ${RESOURCES_HEADERS} ${ICON_RES_FILE})
 
-target_link_libraries (${TARGET} Qt5::Widgets ${IqOrm_LIBRARIES})
+target_link_libraries (${TARGET} Qt5::Widgets Qt5::Network ${IqOrm_LIBRARIES})
 
 set_target_properties (${TARGET} PROPERTIES
                        VERSION ${VERSION})

@@ -2,6 +2,7 @@
 #define IQMETEOMAINWINDOW_H
 
 #include <QMainWindow>
+#include "iqmeteoudplistener.h"
 
 namespace Ui {
 class IqMeteoMainWindow;
@@ -17,6 +18,9 @@ public:
 
 private:
     Ui::IqMeteoMainWindow *ui;
+
+private:
+    IqMeteoUdpListener *m_listener;
 };
 
 #endif // IQMETEOMAINWINDOW_H

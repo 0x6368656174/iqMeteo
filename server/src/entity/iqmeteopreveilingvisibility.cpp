@@ -29,6 +29,7 @@ IqMeteoPrevailingVisibility::IqMeteoPrevailingVisibility(QObject *parent):
     m_maxDirection(""),
     m_noDivision(false)
 {
+    iqOrmExtensionEnable(Extensions::Null);
 }
 
 void IqMeteoPrevailingVisibility::initializeOrmMetaModel(IqOrmMetaModel *model) const

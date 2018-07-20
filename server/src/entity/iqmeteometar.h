@@ -5,21 +5,24 @@
 #include <IqOrmObject>
 #include <QDateTime>
 #include <IqOrmSharedLazyPointer>
+#include <QJsonArray>
 #include "iqmeteometarwind.h"
 #include "iqmeteoairdrome.h"
 #include "iqmeteopreveilingvisibility.h"
+#include "iqmeteoabstractmessage.h"
+#include "iqmeteotextdecoration.h"
 
-class IqMeteoMetar : public QObject, public IqOrmObject
+class IqMeteoMetar : public IqMeteoAbstractMessage, public IqOrmObject
 {
     Q_OBJECT
     IQORM_OBJECT
 
     Q_PROPERTY(QString sourceText READ sourceText WRITE setSourceText NOTIFY sourceTextChanged)
+    Q_PROPERTY(QString textDecorationString READ textDecorationString WRITE setTextDecorationString NOTIFY textDecorationStringChanged)
     Q_PROPERTY(QDateTime observationDateTime READ observationDateTime WRITE setObservationDateTime NOTIFY observationDateTimeChanged)
     Q_PROPERTY(int temperature READ temperature WRITE setTemperature NOTIFY temperatureChanged)
     Q_PROPERTY(int dewPoint READ dewPoint WRITE setDewPoint NOTIFY dewPointChanged)
     Q_PROPERTY(int qnh READ qnh WRITE setQnh NOTIFY qnhChanged)
-    Q_PROPERTY(QString sourceText READ sourceText WRITE setSourceText NOTIFY sourceTextChanged)
 
     Q_PROPERTY(IqOrmSharedLazyPointer<IqMeteoMetarWind> wind READ wind WRITE setWind NOTIFY windChanged)
     Q_PROPERTY(IqOrmSharedLazyPointer<IqMeteoAirdrome> airdrome READ airdrome WRITE setAirdrome NOTIFY airdromeChanged)
@@ -45,6 +48,9 @@ public:
     QString sourceText() const;
     void setSourceText(const QString &sourceText);
 
+    QString textDecorationString() const;
+    void setTextDecorationString(const QString &textDecorationString);
+
     IqOrmSharedLazyPointer<IqMeteoMetarWind> wind() const;
     void setWind(const IqOrmSharedLazyPointer<IqMeteoMetarWind> &wind);
 
@@ -54,12 +60,16 @@ public:
     IqOrmSharedLazyPointer<IqMeteoPrevailingVisibility> prevailingVisibility() const;
     void setPrevailingVisibility(const IqOrmSharedLazyPointer<IqMeteoPrevailingVisibility> &prevailingVisibility);
 
+    QList<IqMeteoTextDecoration> textDecorations() const;
+    void addTextDecoration(const IqMeteoTextDecoration &textDecoration);
+
 signals:
     void observationDateTimeChanged();
     void temperatureChanged();
     void dewPointChanged();
     void qnhChanged();
     void sourceTextChanged();
+    void textDecorationStringChanged();
     void windChanged();
     void airdromeChanged();
     void prevailingVisibilityChanged();
@@ -70,6 +80,8 @@ private:
     int m_dewPoint;
     int m_qnh;
     QString m_sourceText;
+
+    QList<IqMeteoTextDecoration> m_textDecorations;
 
     IqOrmSharedLazyPointer<IqMeteoMetarWind> m_wind;
     IqOrmSharedLazyPointer<IqMeteoAirdrome> m_airdrome;

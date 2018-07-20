@@ -6,6 +6,7 @@ IqMeteoAirdrome::IqMeteoAirdrome(QObject *parent) :
     m_name(""),
     m_icaoCode("")
 {
+    iqOrmExtensionEnable(Extensions::Null);
 }
 
 void IqMeteoAirdrome::initializeOrmMetaModel(IqOrmMetaModel *model) const

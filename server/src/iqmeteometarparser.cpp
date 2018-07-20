@@ -1,5 +1,6 @@
 #include "iqmeteometarparser.h"
 #include <IqOrmModel>
+#include <QJsonObject>
 #include <src/entity/iqmeteorunwayvisibility.h>
 
 void IqMeteoMetarParser::parseTemperature(IqMeteoMetar *metar, const QString &message)
@@ -27,7 +28,7 @@ void IqMeteoMetarParser::parseAndSave(IqMeteoMetar *metar, const QString &messag
 
     metar->setSourceText(message);
 
-    parseSpeed(metar, message);
+    parseWind(metar, message);
     parseAirdrome(metar, message);
     parseTemperature(metar, message);
     parseObservationDateTime(metar, message);
@@ -36,10 +37,11 @@ void IqMeteoMetarParser::parseAndSave(IqMeteoMetar *metar, const QString &messag
 
     metar->wind()->save();
     metar->prevailingVisibility()->save();
+
     metar->save();
 }
 
-void IqMeteoMetarParser::parseSpeed(IqMeteoMetar *metar, const QString &message)
+void IqMeteoMetarParser::parseWind(IqMeteoMetar *metar, const QString &message)
 {
     QRegExp speedRx("\\s((VRB)|(\\d{3}))(\\d{2})(G(\\d{2})){0,1}((MPS)|(KT)|(KMH))(\\s+(\\d{3})V(\\d{3})){0,1}\\s");
 
@@ -50,9 +52,10 @@ void IqMeteoMetarParser::parseSpeed(IqMeteoMetar *metar, const QString &message)
             metar->wind()->setDirection(speedRx.cap(3).toInt());
 
         metar->wind()->setSpeed(speedRx.cap(4).toInt());
+        metar->addTextDecoration(IqMeteoTextDecoration(speedRx.pos(4), speedRx.cap(4).length(), "wind_speed"));
 
         if (!speedRx.cap(5).isEmpty())
-            metar->wind()->setSpeed(speedRx.cap(6).toInt());
+            metar->wind()->setGust(speedRx.cap(6).toInt());
 
         metar->wind()->setMeasurements(speedRx.cap(7));
 

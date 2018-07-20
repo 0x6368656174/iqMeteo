@@ -1,7 +1,8 @@
 #include "iqmeteometar.h"
+#include <QJsonDocument>
 
 IqMeteoMetar::IqMeteoMetar(QObject *parent) :
-    QObject(parent),
+    IqMeteoAbstractMessage(parent),
     IqOrmObject(),
     m_temperature(0),
     m_dewPoint(0),
@@ -10,6 +11,9 @@ IqMeteoMetar::IqMeteoMetar(QObject *parent) :
     m_wind(IqOrmSharedLazyPointer<IqMeteoMetarWind>(new IqMeteoMetarWind())),
     m_prevailingVisibility(IqOrmSharedLazyPointer<IqMeteoPrevailingVisibility>(new IqMeteoPrevailingVisibility()))
 {
+    iqOrmExtensionEnable(Extensions::Null);
+
+    setType(IqMeteo::Type::Metar);
 }
 
 void IqMeteoMetar::initializeOrmMetaModel(IqOrmMetaModel *model) const
@@ -20,6 +24,7 @@ void IqMeteoMetar::initializeOrmMetaModel(IqOrmMetaModel *model) const
     model->setDirect("dewPoint", "dew_point");
     model->setDirect("qnh");
     model->setDirect("sourceText", "source_text");
+    model->setDirect("textDecorationString", "text_decoration");
 
     model->setOneToOne<IqMeteoMetarWind>("wind", "id_winds");
     model->setManyToOne<IqMeteoAirdrome>("airdrome", "id_airdrome");
@@ -129,3 +134,42 @@ void IqMeteoMetar::setPrevailingVisibility(const IqOrmSharedLazyPointer<IqMeteoP
         emit prevailingVisibilityChanged();
     }
 }
+
+QString IqMeteoMetar::textDecorationString() const
+{
+    QJsonArray textDecorationsArray;
+    for (const IqMeteoTextDecoration &textDecoration: m_textDecorations) {
+        textDecorationsArray.append(textDecoration.toJson());
+    }
+
+    QJsonDocument doc;
+    doc.setArray(textDecorationsArray);
+
+    return doc.toJson();
+}
+
+void IqMeteoMetar::setTextDecorationString(const QString &textDecorationString)
+{
+    m_textDecorations.clear();
+    QJsonDocument doc = QJsonDocument::fromJson(textDecorationString.toLocal8Bit());
+
+    QJsonArray textDecorations = doc.array();
+
+    for (int i = 0; i < textDecorations.size(); ++i) {
+        IqMeteoTextDecoration textDecoration;
+        textDecoration.fromJson(textDecorations.at(i).toObject());
+        m_textDecorations.append(textDecoration);
+    }
+}
+
+void IqMeteoMetar::addTextDecoration(const IqMeteoTextDecoration &textDecoration)
+{
+    m_textDecorations.append(textDecoration);
+    emit textDecorationStringChanged();
+}
+
+QList<IqMeteoTextDecoration> IqMeteoMetar::textDecorations() const
+{
+    return m_textDecorations;
+}
+

@@ -6,8 +6,8 @@
 
 class IqMeteoAirdrome: public QObject, public IqOrmObject
 {
-Q_OBJECT
-IQORM_OBJECT
+    Q_OBJECT
+    IQORM_OBJECT
 
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(QString icaoCode READ icaoCode WRITE setIcaoCode NOTIFY icaoCodeChanged)
@@ -18,16 +18,13 @@ public:
     virtual void initializeOrmMetaModel(IqOrmMetaModel *model) const override;
 
     QString name() const;
-
     void setName(const QString &name);
 
     QString icaoCode() const;
-
     void setIcaoCode(const QString &icaoCode);
 
 signals:
     void nameChanged();
-
     void icaoCodeChanged();
 
 private:

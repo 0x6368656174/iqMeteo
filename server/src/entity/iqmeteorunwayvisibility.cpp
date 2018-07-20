@@ -28,6 +28,7 @@ IqMeteoRunwayVisibility::IqMeteoRunwayVisibility(QObject *parent):
     m_max(0),
     m_min(0)
 {
+    iqOrmExtensionEnable(Extensions::Null);
 }
 
 void IqMeteoRunwayVisibility::initializeOrmMetaModel(IqOrmMetaModel *model) const

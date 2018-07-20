@@ -1,3 +1,6 @@
 [submodule "IqOrm"]
 	path = IqOrm
 	url = https://github.com/ItQuasarOrg/IqOrm
+[submodule "IqWamp"]
+	path = IqWamp
+	url = https://github.com/ItQuasarOrg/IqWamp.git

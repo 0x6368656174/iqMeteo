@@ -3,11 +3,13 @@
 
 #include "iqmeteo.h"
 #include <QObject>
+#include <QSharedPointer>
+#include "entity/iqmeteoabstractmessage.h"
 
 class IqMeteoMessageParser
 {
 public:
-    static void parserAndSave(IqMeteo::Type type, const QString &message);
+    static QSharedPointer<IqMeteoAbstractMessage> parserAndSave(IqMeteo::Type type, const QString &message);
 };
 
 #endif // IQMETEOMESSAGEPARSER_H

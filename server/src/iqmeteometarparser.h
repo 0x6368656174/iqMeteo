@@ -9,7 +9,7 @@ public:
     void parseAndSave(IqMeteoMetar *metar, const QString &message);
 
 private:
-    void parseSpeed(IqMeteoMetar *metar, const QString &message);
+    void parseWind(IqMeteoMetar *metar, const QString &message);
     void parseAirdrome(IqMeteoMetar *metar, const QString &message);
     void parseTemperature(IqMeteoMetar *metar, const QString &message);
     void parseObservationDateTime(IqMeteoMetar *metar, const QString &message);

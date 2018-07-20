@@ -11,6 +11,7 @@ IqMeteoMetarWind::IqMeteoMetarWind(QObject *parent) :
     m_variableDirectionMin(0),
     m_variableDirectionMax(0)
 {
+    iqOrmExtensionEnable(Extensions::Null);
 }
 
 void IqMeteoMetarWind::initializeOrmMetaModel(IqOrmMetaModel *model) const

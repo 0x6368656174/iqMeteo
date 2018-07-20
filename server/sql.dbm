@@ -8909,21 +8909,27 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="source_text">
 		<type name="text"/>
 	</column>
+	<column name="text_decoration">
+		<type name="text"/>
+	</column>
 	<constraint name="metars_pk_id" type="pk-constr" table="public.metars">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 
 	<customidxs object-type="column">
-		<object name="id_airdrome" index="6"/>
-		<object name="id_prevailing_visibility" index="8"/>
-		<object name="id_winds" index="7"/>
+		<object name="id_airdrome" index="7"/>
+		<object name="id_prevailing_visibility" index="9"/>
+		<object name="id_rmk" index="10"/>
+		<object name="id_winds" index="8"/>
 	</customidxs>
 
 	<customidxs object-type="constraint">
 		<object name="airdrome_fk" index="1"/>
 		<object name="metars_uq" index="3"/>
 		<object name="metars_uq1" index="5"/>
+		<object name="metars_uq2" index="7"/>
 		<object name="prevailing_visibility_fk" index="4"/>
+		<object name="rmk_fk" index="6"/>
 		<object name="winds_fk" index="2"/>
 	</customidxs>
 </table>
@@ -9204,6 +9210,24 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-table="public.rmk"
 	 dst-table="public.metars"
 	 src-required="false" dst-required="false"/>
+
+<table name="colors">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Цвета]]></comment>
+	<appended-sql><![CDATA[INSERT INTO public.colors (name,color) VALUES 
+('wind_speed','#00FFFF');]]></appended-sql>
+	<position x="220" y="646"/>
+	<column name="id">
+		<type name="serial"/>
+	</column>
+	<column name="name">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="color">
+		<type name="varchar" length="7"/>
+	</column>
+</table>
 
 <constraint name="wather_event_sets_fk_first_event" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.weather_events" table="public.wather_event_sets">
